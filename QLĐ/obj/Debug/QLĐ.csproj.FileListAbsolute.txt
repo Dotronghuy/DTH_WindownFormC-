@@ -1,0 +1,10 @@
+C:\Users\Admin\source\repos\C#\QLĐ\QLĐ\bin\Debug\QLĐ.exe.config
+C:\Users\Admin\source\repos\C#\QLĐ\QLĐ\bin\Debug\QLĐ.exe
+C:\Users\Admin\source\repos\C#\QLĐ\QLĐ\bin\Debug\QLĐ.pdb
+C:\Users\Admin\source\repos\C#\QLĐ\QLĐ\obj\Debug\QLĐ.csproj.AssemblyReference.cache
+C:\Users\Admin\source\repos\C#\QLĐ\QLĐ\obj\Debug\QLĐ.Form1.resources
+C:\Users\Admin\source\repos\C#\QLĐ\QLĐ\obj\Debug\QLĐ.Properties.Resources.resources
+C:\Users\Admin\source\repos\C#\QLĐ\QLĐ\obj\Debug\QLĐ.csproj.GenerateResource.cache
+C:\Users\Admin\source\repos\C#\QLĐ\QLĐ\obj\Debug\QLĐ.csproj.CoreCompileInputs.cache
+C:\Users\Admin\source\repos\C#\QLĐ\QLĐ\obj\Debug\QLĐ.exe
+C:\Users\Admin\source\repos\C#\QLĐ\QLĐ\obj\Debug\QLĐ.pdb
