@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SqlClient;
-
 
 namespace QLĐ
 {
-    public partial class Form1 : Form
+    public partial class frKQ : Form
     {
-        public Form1()
+        public frKQ()
         {
             InitializeComponent();
         }
@@ -29,31 +28,56 @@ namespace QLĐ
         {
             using (SqlConnection con = ketnoiCSDL())
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Monhoc", con);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM KetQua", con);
                 SqlDataReader dr = cmd.ExecuteReader();
                 DataTable dt = new DataTable();
                 dt.Load(dr);
-                dataGridView1.DataSource = dt;
+                dgvKQ.DataSource = dt;
             }
         }
-        private void Form1_Load(object sender, EventArgs e)
+        private void frKQ_Load(object sender, EventArgs e)
         {
             loadData();
         }
         void timvitriluoi(string ma)
         {
             int i = 0;
-            while (i < dataGridView1.Rows.Count)
+            while (i < dgvKQ.Rows.Count)
             {
-                if (ma.Trim().Equals(dataGridView1.Rows[i].Cells[0].Value.ToString().Trim()))
+                if (ma.Trim().Equals(dgvKQ.Rows[i].Cells[0].Value.ToString().Trim()))
                 {
-                    dataGridView1.CurrentCell = dataGridView1.Rows[i].Cells[0];
+                    dgvKQ.CurrentCell = dgvKQ.Rows[i].Cells[0];
                     break;
                 }
                 i++;
             }
         }
+        private void HienThiDuLieuTuDataGridViewLenThanhNhap(DataGridViewRow row)
+        {
+            if (row != null)
+            {
+                tbDiem.Text = row.Cells["Diem"].Value.ToString();
+                tbLT.Text = row.Cells["LanThi"].Value.ToString();
+                tbMaSV.Text = row.Cells["MaSV"].Value.ToString();
+                tbMMH.Text = row.Cells["MaMH"].Value.ToString();
+            }
+            else
+            {
+                tbDiem.Clear();
+                tbLT.Clear();
+                tbMaSV.Clear();
+                tbMMH.Clear();
+            }
+        }
 
+        private void dgvKQ_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.RowIndex < dgvKQ.RowCount - 1)
+            {
+                DataGridViewRow selectedRow = dgvKQ.Rows[e.RowIndex];
+                HienThiDuLieuTuDataGridViewLenThanhNhap(selectedRow);
+            }
+        }
 
         private void btnThem_Click(object sender, EventArgs e)
         {
@@ -61,13 +85,14 @@ namespace QLĐ
             {
                 try
                 {
-                string sql = "INSERT INTO MonHoc VALUES (@MaMH, @TenMH, @Sotiet)";
-                SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@MaMH", tbMaMH.Text);
-                cmd.Parameters.AddWithValue("@TenMH", txTenMH.Text);
-                cmd.Parameters.AddWithValue("@Sotiet", tbSotiet.Text);
-                cmd.ExecuteNonQuery();
-                timvitriluoi(tbMaMH.Text);
+                    string sql = "INSERT INTO KetQua VALUES (@MaSV, @MaMH, @Lanthi,@Diem)";
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@MaSV", tbMaSV.Text);
+                    cmd.Parameters.AddWithValue("@MaMH", tbMMH.Text);
+                    cmd.Parameters.AddWithValue("@Lanthi", tbLT.Text);
+                    cmd.Parameters.AddWithValue("@Diem", tbDiem.Text);
+                    cmd.ExecuteNonQuery();
+                    timvitriluoi(tbMaSV.Text);
                 }
                 catch (Exception er)
                 {
@@ -75,7 +100,7 @@ namespace QLĐ
                 }
 
             }
-          
+
             loadData();
         }
 
@@ -85,12 +110,12 @@ namespace QLĐ
             {
                 try
                 {
-                string sql = "UPDATE MonHoc SET TenMH = @tenmh, Sotiet = @sotiet WHERE MaMH = @mamh";
-                SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@tenmh", txTenMH.Text);
-                cmd.Parameters.AddWithValue("@sotiet", tbSotiet.Text);
-                cmd.Parameters.AddWithValue("@mamh", tbMaMH.Text);
-                cmd.ExecuteNonQuery();
+                    string sql = "UPDATE KetQua SET MaMH = @mamh, Lanthi = @lanthi, Diem = @diem WHERE MaSV = @masv";
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@mamh", tbMMH.Text);
+                    cmd.Parameters.AddWithValue("@lanthi", tbLT.Text);
+                    cmd.Parameters.AddWithValue("@diem", tbDiem.Text);
+                    cmd.ExecuteNonQuery();
                     loadData();
                 }
                 catch (Exception er)
@@ -100,36 +125,17 @@ namespace QLĐ
             }
             loadData();
         }
-        private void HienThiDuLieuTuDataGridViewLenThanhNhap(DataGridViewRow row)
-        {
-            if (row != null)
-            {
-                tbMaMH.Text = row.Cells["MaMH"].Value.ToString();
-                txTenMH.Text = row.Cells["TenMH"].Value.ToString();
-                tbSotiet.Text = row.Cells["Sotiet"].Value.ToString();
-            }
-            else
-            {
-                tbMaMH.Clear();
-                txTenMH.Clear();
-                tbSotiet.Clear();
-            }
-        }
-        private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
-        {
-        
-        }
 
         private void btnXoa_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.SelectedRows.Count > 0)
+            if (dgvKQ.SelectedRows.Count > 0)
             {
                 DialogResult result = MessageBox.Show("Bạn có chắc chắn muốn xóa dòng này không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    string maMH = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
-                    DeleteMonHoc(maMH);
-                    loadData(); 
+                    string maMH = dgvKQ.SelectedRows[0].Cells[0].Value.ToString();
+                    DeleteKQ(maMH);
+                    loadData();
                 }
             }
             else
@@ -137,18 +143,17 @@ namespace QLĐ
                 MessageBox.Show("Vui lòng chọn dòng để xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
-        private void DeleteMonHoc(string maMH)
+        private void DeleteKQ(string maMH)
         {
             using (SqlConnection con = ketnoiCSDL())
-       
+
             {
                 try
                 {
-                string sql = "DELETE FROM MonHoc WHERE MaMH = @mamh";
-                SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@mamh", maMH);
-                cmd.ExecuteNonQuery();
+                    string sql = "DELETE FROM MonHoc WHERE MaMH = @mamh";
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@mamh", maMH);
+                    cmd.ExecuteNonQuery();
                 }
                 catch (Exception er)
                 {
@@ -162,31 +167,17 @@ namespace QLĐ
             DialogResult result = MessageBox.Show("Bạn có chắc chắn muốn thoát khỏi ứng dụng không?", "Xác nhận thoát", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
-                Application.Exit(); 
+                Application.Exit();
             }
         }
 
         private void btnResert_Click(object sender, EventArgs e)
         {
-            tbMaMH.Clear();
-            txTenMH.Clear();
-            tbSotiet.Clear();
-            tbMaMH.Focus();
+            tbMaSV.Clear();
+            tbMMH.Clear();
+            tbLT.Clear();
+            tbDiem.Clear();
 
-        }
-
-        private void tbMaMH_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_RowEnter_1(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0 && e.RowIndex < dataGridView1.RowCount - 1)
-            {
-                DataGridViewRow selectedRow = dataGridView1.Rows[e.RowIndex];
-                HienThiDuLieuTuDataGridViewLenThanhNhap(selectedRow);
-            }
         }
     }
 }

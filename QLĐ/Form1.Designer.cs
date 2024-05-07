@@ -42,6 +42,7 @@ namespace QLĐ
             this.btnSua = new System.Windows.Forms.Button();
             this.btnXoa = new System.Windows.Forms.Button();
             this.btnThoat = new System.Windows.Forms.Button();
+            this.btnResert = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,7 +55,7 @@ namespace QLĐ
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(667, 232);
             this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter_1);
             // 
             // tbMaMH
             // 
@@ -62,6 +63,7 @@ namespace QLĐ
             this.tbMaMH.Name = "tbMaMH";
             this.tbMaMH.Size = new System.Drawing.Size(667, 22);
             this.tbMaMH.TabIndex = 2;
+            this.tbMaMH.TextChanged += new System.EventHandler(this.tbMaMH_TextChanged);
             // 
             // tbSotiet
             // 
@@ -160,11 +162,22 @@ namespace QLĐ
             this.btnThoat.UseVisualStyleBackColor = true;
             this.btnThoat.Click += new System.EventHandler(this.btnThoat_Click);
             // 
+            // btnResert
+            // 
+            this.btnResert.Location = new System.Drawing.Point(525, 157);
+            this.btnResert.Name = "btnResert";
+            this.btnResert.Size = new System.Drawing.Size(75, 33);
+            this.btnResert.TabIndex = 14;
+            this.btnResert.Text = "Đặt lại";
+            this.btnResert.UseVisualStyleBackColor = true;
+            this.btnResert.Click += new System.EventHandler(this.btnResert_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnResert);
             this.Controls.Add(this.btnThoat);
             this.Controls.Add(this.btnXoa);
             this.Controls.Add(this.btnSua);
@@ -202,6 +215,7 @@ namespace QLĐ
         private System.Windows.Forms.Button btnSua;
         private System.Windows.Forms.Button btnXoa;
         private System.Windows.Forms.Button btnThoat;
+        private System.Windows.Forms.Button btnResert;
     }
 }
 

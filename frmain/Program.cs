@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QLĐ
+namespace frmain
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace QLĐ
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmain());
+            Application.Run(new Form1());
         }
     }
 }
